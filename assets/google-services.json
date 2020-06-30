@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "613645704114",
+    "firebase_url": "https://woodwork-2fd18.firebaseio.com",
+    "project_id": "woodwork-2fd18",
+    "storage_bucket": "woodwork-2fd18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613645704114:android:10d7876c88276d890c22ab",
+        "android_client_info": {
+          "package_name": "com.local.woodwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613645704114-047s6sp0rddaa9ak38v15ve3e2q3aksu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHbxEKSCLQM7VgyEvn-BWYBaf6H5rqn-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613645704114-047s6sp0rddaa9ak38v15ve3e2q3aksu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

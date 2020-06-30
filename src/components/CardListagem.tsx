@@ -121,7 +121,7 @@ export default function CardListagem(item: any) {
               <View>
                 <Image
                   style={styles.image}
-                  source={item.objeto.image}
+                  source={{ uri: item.objeto.image }}
                 />
               </View>
             ) : (

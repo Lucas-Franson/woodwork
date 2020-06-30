@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import styles from './index.css';
 import CardListagem from '../../components/CardListagem';
 import EstoqueInterface from '../../interfaces/estoque';
 import { useNavigation } from '@react-navigation/native';
+import firebase from '../../components/Firebase';
 
 export default function Estoque() {
 
     const navigation = useNavigation();
-    
-    const [data, setData] = useState<EstoqueInterface[]>([
-        { id: 1, nome: 'Madeira', detalhes: 'Teste de uma descrição bem grande de um dos produtos cadastrados.', image: require('../../assets/estoque.png')},
-        { id: 2, nome: 'Parafuso', detalhes: '', image: require('../../assets/produtos.png')},
-        { id: 3, nome: 'Prego', detalhes: '', image: require('../../assets/clientes.png')},
-        { id: 4, nome: 'Tinta', detalhes: '', image: require('../../assets/pedidos.png')},
-      ]);
 
     const [lazyLoading, setLazyLoading] = useState<boolean>(false);
+    const [data, setData] = useState<EstoqueInterface[]>([{
+        id: 0, detalhes: '', image: '', nome: '', quantidade: 0
+    }]);
+
+    useEffect(() => {
+        firebase.database().ref('estoque').on('value', (snapshot) => {
+            const estoque = snapshot.val();
+            if(!!estoque){
+                let arr = [];
+                estoque.forEach(element => {
+                    if(element != null) arr.push(element);
+                });
+                setData(arr);
+            }
+            setLazyLoading(true);
+        });
+    }, []);
 
     function renderFooter () {
         if (lazyLoading) return null;

@@ -52,6 +52,37 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+
+    formulario: {
+        margin: 10
+    },
+
+    textInput: {
+        height: 40, 
+        borderColor: 'gray', 
+        borderWidth: 1,
+        padding: 5,
+        borderRadius: 10
+    },
+
+    formGroup: {
+        margin: 10
+    },
+
+    btnAcoes: {
+        borderRadius: 10,
+        height: 40,
+        width: 200,
+        backgroundColor: '#75B09C',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    blockSalvar: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+
 });
 
 export default styles;
