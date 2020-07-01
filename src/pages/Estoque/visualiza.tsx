@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, Button, 
   ActivityIndicator, Text, ScrollView, 
-  Image, TextInput, Alert } from 'react-native';
+  Image, TextInput, Alert, ActivityIndicatorComponent } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Estoque from '../../interfaces/estoque';
 import styles from './visualiza.css';
@@ -10,7 +10,6 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import { TouchableOpacity, TouchableHighlight, TouchableNativeFeedback } from 'react-native-gesture-handler';
 import firebase from '../../components/Firebase';
-import AwesomeAlert from '@types/react-native-awesome-alerts';
 
 
 export default function VisualizaEstoque() {
@@ -39,10 +38,22 @@ export default function VisualizaEstoque() {
   }, []);
 
   useEffect(() => {
-    if(!!routeParams) setData({ ...routeParams });
+    if(!!routeParams) {
+      setData({ ...routeParams });
+    } else {
+      firebase.database().ref('estoque').on('value', (snapshot) => {
+        const estoque = snapshot.val();
+        if(!!estoque){
+            var arr = estoque.pop();
+            let id = arr.id + 1;
+            setData({...data, id });
+        } else {
+          setData({...data, id: 1 });
+        }
+    });
+    }
   }, []);
   
-    
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync();
 
@@ -54,8 +65,10 @@ export default function VisualizaEstoque() {
     }
   };
 
-  function salvar() {
-    firebase.database().ref('estoque/' + data.id).set(data).then((resp) => {
+  async function salvar() {
+    setIsLoading(true);
+    await firebase.database().ref('estoque/' + data.id).set(data).then((resp) => {
+      setIsLoading(false);
       Alert.alert("Salvo!", "Estoque salvo com sucesso.");
     });
   }
@@ -63,25 +76,6 @@ export default function VisualizaEstoque() {
   return (
     <SafeAreaView style={styles.container}>
       {isLoading ? <ActivityIndicator size="large" color="#f48120" /> : <Text />}
-      <AwesomeAlert
-          show={showAlert}
-          showProgress={false}
-          title="AwesomeAlert"
-          message="I have a message for you!"
-          closeOnTouchOutside={true}
-          closeOnHardwareBackPress={false}
-          showCancelButton={true}
-          showConfirmButton={true}
-          cancelText="No, cancel"
-          confirmText="Yes, delete it"
-          confirmButtonColor="#DD6B55"
-          onCancelPressed={() => {
-            this.hideAlert();
-          }}
-          onConfirmPressed={() => {
-            this.hideAlert();
-          }}
-        />
       <ScrollView>
         <View style={styles.image}>
           <TouchableOpacity onPress={pickImage}>

@@ -12,22 +12,22 @@ export default function Estoque() {
     const navigation = useNavigation();
 
     const [lazyLoading, setLazyLoading] = useState<boolean>(false);
-    const [data, setData] = useState<EstoqueInterface[]>([{
-        id: 0, detalhes: '', image: '', nome: '', quantidade: 0
-    }]);
+    const [data, setData] = useState<EstoqueInterface[]>([]);
 
     useEffect(() => {
-        firebase.database().ref('estoque').on('value', (snapshot) => {
-            const estoque = snapshot.val();
-            if(!!estoque){
-                let arr = [];
-                estoque.forEach(element => {
-                    if(element != null) arr.push(element);
-                });
-                setData(arr);
-            }
-            setLazyLoading(true);
-        });
+        async function listar() {
+            await firebase.database().ref('estoque').on('value', (snapshot) => {
+                const estoque = snapshot.val();
+                
+                if(!!estoque){
+                    let arr = estoque.filter(x=> x != null);
+                    setData(arr);
+                }
+                setLazyLoading(true);
+            });
+        }
+
+        listar();
     }, []);
 
     function renderFooter () {
@@ -54,10 +54,10 @@ export default function Estoque() {
                 <TouchableOpacity
                 style={styles.fab}
                 onPress={() => {
-                    navigation.navigate("");
+                    navigation.navigate("VisualizaEstoque");
                 }}
                 >
-                <Text style={styles.fabIcon}>+</Text>
+                    <Text style={styles.fabIcon}>+</Text>
                 </TouchableOpacity>
             </View>
         </View>

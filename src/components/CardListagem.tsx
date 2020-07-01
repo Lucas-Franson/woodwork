@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Image, Text, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import firebase from '../components/Firebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -109,6 +109,10 @@ export default function CardListagem(item: any) {
 
     let hasPhoto = item.objeto.image ?? false;
 
+    async function remove() {
+      await firebase.database().ref('estoque/'+item.objeto.id).remove();
+    }
+
     return (
         <View style={styles.container}>
           <TouchableOpacity
@@ -137,16 +141,14 @@ export default function CardListagem(item: any) {
                 <TouchableOpacity
                   style={styles.followButton}
                   onPress={() => {
-                    Alert.alert("Psiuuu!", "Funcionalidade ainda não implementada.");
+                    navigation.navigate(item.view, item.objeto);
                   }}
                 >
                   <Text style={styles.followButtonText}>Editar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.removerButton}
-                  onPress={() => {
-                    Alert.alert("Psiuuu!", "Funcionalidade ainda não implementada.");
-                  }}
+                  onPress={remove}
                 >
                   <Text style={styles.removerButtonText}>Remover</Text>
                 </TouchableOpacity>
