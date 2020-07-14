@@ -109,10 +109,6 @@ export default function CardListagem(item: any) {
 
     let hasPhoto = item.objeto.image ?? false;
 
-    async function remove() {
-      await firebase.database().ref('estoque/'+item.objeto.id).remove();
-    }
-
     return (
         <View style={styles.container}>
           <TouchableOpacity
@@ -148,7 +144,7 @@ export default function CardListagem(item: any) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.removerButton}
-                  onPress={remove}
+                  onPress={() => item.remove(item.objeto.id)}
                 >
                   <Text style={styles.removerButtonText}>Remover</Text>
                 </TouchableOpacity>

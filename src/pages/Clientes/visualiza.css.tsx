@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: '#fff',
     },
-    
+
     header: {
         paddingTop: 10,
         paddingHorizontal: 20,
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto_500Medium',
         fontSize: 18
     },
-
 });
 
 export default styles;

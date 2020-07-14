@@ -16,12 +16,16 @@ export default function Estoque() {
 
     useEffect(() => {
         async function listar() {
-            await firebase.database().ref('estoque').on('value', (snapshot) => {
-                const estoque = snapshot.val();
+            await firebase.database()
+            .ref('/estoque/')
+            .on('value', snapshot => {
+                const estoque:any = [];
+                snapshot.forEach(element => {
+                    estoque.push(element.val());
+                });
                 
                 if(!!estoque){
-                    let arr = estoque.filter(x=> x != null);
-                    setData(arr);
+                    setData([...estoque]);
                 }
                 setLazyLoading(true);
             });
@@ -29,6 +33,10 @@ export default function Estoque() {
 
         listar();
     }, []);
+
+    async function remove(id:number) {
+        await firebase.database().ref('estoque/'+id).remove();
+    }
 
     function renderFooter () {
         if (lazyLoading) return null;
@@ -44,7 +52,7 @@ export default function Estoque() {
             <FlatList
                 data={data}
                 renderItem={({ item }) => (
-                    <CardListagem objeto={item} view="VisualizaEstoque" />
+                    <CardListagem objeto={item} remove={remove} view="VisualizaEstoque" />
                 )}
                 keyExtractor={item => String(item.id)}
                 ListFooterComponent={renderFooter}

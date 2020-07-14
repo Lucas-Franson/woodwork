@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, 
+import { View, SafeAreaView, FlatList,
   ActivityIndicator, Text, ScrollView, 
   Image, TextInput, Alert, Modal } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import Estoque from '../../interfaces/estoque';
+import Produto from '../../interfaces/produto';
 import styles from './visualiza.css';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import { TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import firebase from '../../components/Firebase';
+import MultiSelect from 'react-native-multiple-select';
 
-
-export default function VisualizaEstoque() {
+export default function VisualizaProduto() {
 
   const route = useRoute();
-  const routeParams = route.params as Estoque;
+  const routeParams = route.params as Produto;
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
   const [data, setData] = useState({
     id: 0,
-    detalhes: "",
-    image: "",
     nome: "",
-    quantidade: 0
+    detalhes: "",
+    itens: [],
+    image: ""
   });
 
   useEffect(() => {
@@ -42,16 +43,16 @@ export default function VisualizaEstoque() {
     if(!!routeParams) {
       setData({ ...routeParams });
     } else {
-      firebase.database().ref('estoque').on('value', (snapshot) => {
-        const estoque:any = [];
+      firebase.database().ref('produto').on('value', (snapshot) => {
+        const produto:any = [];
 
         snapshot.forEach(element => {
-          estoque.push(element.val());
+          produto.push(element.val());
         });
         
-        if(!!estoque){
-          if(estoque.length > 0) {
-            var arr = estoque.pop();
+        if(!!produto){
+          if(produto.length > 0) {
+            var arr = produto.pop();
             let id = arr.id + 1;
             setData({...data, id });
           } else {
@@ -78,8 +79,15 @@ export default function VisualizaEstoque() {
   async function salvar() {
     setModalVisible(true);
     setIsLoading(true);
-    await firebase.database().ref('estoque/' + data.id).set(data).then((resp) => {
+    await firebase.database().ref('produto/' + data.id).set(data).then((resp) => {
       setIsLoading(false);
+      setData({
+          id: 0,
+          detalhes: "",
+          image: "",
+          itens: [],
+          nome: ""
+      })
       setTimeout(() => {
         setModalVisible(false);
       }, 1000);
@@ -128,6 +136,39 @@ export default function VisualizaEstoque() {
     );
   }
 
+  const items = [{
+    id: '92iijs7yta',
+    name: 'Ondo',
+  }, {
+    id: 'a0s0a8ssbsd',
+    name: 'Ogun',
+  }, {
+    id: '16hbajsabsd',
+    name: 'Calabar',
+  }, {
+    id: 'nahs75a5sg',
+    name: 'Lagos',
+  }, {
+    id: '667atsas',
+    name: 'Maiduguri',
+  }, {
+    id: 'hsyasajs',
+    name: 'Anambra',
+  }, {
+    id: 'djsjudksjd',
+    name: 'Benue',
+  }, {
+    id: 'sdhyaysdj',
+    name: 'Kaduna',
+  }, {
+    id: 'suudydjsjd',
+    name: 'Abuja',
+  }];
+
+  function onSelectedItemsChange(items: any) {
+    setSelectedItems(items);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <SearchFilter />
@@ -163,43 +204,64 @@ export default function VisualizaEstoque() {
         </View>
                   
         <View style={styles.formulario}>
-          <View style={styles.formGroup}>
-            <Text>Nome</Text>
-            <TextInput 
-              style={styles.textInput}
-              placeholder={'Parafuso...'}
-              maxLength={44}
-              value={data.nome}
-              autoCorrect={false}
-              onChangeText={(text) => setData({ ...data, nome: text })}
-            />
-          </View>
-          <View style={styles.formGroup}>
-            <Text>Descrição</Text>
-            <TextInput 
-              style={styles.textInput}
-              editable={true}
-              placeholder={'Usado para parafusar...'}
-              maxLength={44}
-              autoCompleteType={'off'}
-              value={data.detalhes}
-              autoCorrect={false}
-              onChangeText={(text) => setData({ ...data, detalhes: text }) }
-            />
-          </View>
-          <View style={styles.formGroup}>
-            <Text>Quantidade</Text>
-            <TextInput 
-              style={[styles.textInput, { width: 100 }]}
-              editable={true}
-              placeholder={'Quantidade...'}
-              autoCompleteType={'cc-number'}
-              keyboardType={'numeric'}
-              value={data.quantidade.toString()}
-              autoCorrect={false}
-              onChangeText={(text) => setData({ ...data, quantidade: parseInt((text == "" ? "0" : text)) }) }
-            />
-          </View>
+            <View style={styles.formGroup}>
+                <Text>Nome</Text>
+                <TextInput 
+                style={styles.textInput}
+                placeholder={'Estante...'}
+                maxLength={44}
+                value={data.nome}
+                autoCorrect={false}
+                onChangeText={(text) => setData({ ...data, nome: text })}
+                />
+            </View>
+            <View style={styles.formGroup}>
+                <Text>Descrição</Text>
+                <TextInput 
+                style={styles.textInput}
+                editable={true}
+                placeholder={'Dimensões de (x,y)...'}
+                maxLength={44}
+                autoCompleteType={'off'}
+                value={data.detalhes}
+                autoCorrect={false}
+                onChangeText={(text) => setData({ ...data, detalhes: text }) }
+                />
+            </View>
+            <View style={styles.formGroup}>
+                <View style={{ flex: 1 }}>
+                    <MultiSelect
+                    hideTags
+                    items={items}
+                    uniqueKey="id"
+                    onSelectedItemsChange={onSelectedItemsChange}
+                    selectedItems={selectedItems}
+                    selectText="Pick Items"
+                    searchInputPlaceholderText="Search Items..."
+                    onChangeInput={ (text)=> console.log(text)}
+                    tagRemoveIconColor="#CCC"
+                    tagBorderColor="#CCC"
+                    tagTextColor="#CCC"
+                    selectedItemTextColor="#CCC"
+                    selectedItemIconColor="#CCC"
+                    itemTextColor="#000"
+                    displayKey="name"
+                    searchInputStyle={{ color: '#CCC' }}
+                    submitButtonColor="#CCC"
+                    submitButtonText="Submit"
+                    />
+                </View>
+            </View>
+            <View style={styles.formGroup}>
+                <FlatList
+                    data={selectedItems}
+                    renderItem={({ item }) => (
+                        <View><Text>{item}</Text></View>
+                    )}
+                    keyExtractor={item => String(item)}
+                    onEndReachedThreshold={0.1}
+                />
+            </View>
         </View>
         <View style={styles.blockSalvar}>
           <TouchableHighlight 
