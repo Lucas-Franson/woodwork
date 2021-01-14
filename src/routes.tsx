@@ -11,6 +11,7 @@ import Clientes from './pages/Clientes';
 import VisualizaEstoque from './pages/Estoque/visualiza';
 import VisualizaCliente from './pages/Clientes/visualiza';
 import VisualizaProduto from './pages/Produtos/visualiza';
+import VisualizaPedido from './pages/Pedidos/visualiza';
 
 const AppStack = createStackNavigator();
 
@@ -78,6 +79,20 @@ const Routes = () => {
                             fontWeight: 'bold'
                         },
                         headerTitle: 'Pedidos'
+                    }}
+                />
+                <AppStack.Screen 
+                    name="VisualizaPedido" 
+                    component={VisualizaPedido} 
+                    options={{
+                        headerStyle: {
+                            backgroundColor: '#615D6C'
+                        },
+                        headerTintColor: '#FFF',
+                        headerTitleStyle: {
+                            fontWeight: 'bold'
+                        },
+                        headerTitle: 'Visualiza Pedido'
                     }}
                 />
                 <AppStack.Screen 

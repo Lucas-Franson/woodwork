@@ -52,7 +52,7 @@ export default function Estoque() {
             <FlatList
                 data={data}
                 renderItem={({ item }) => (
-                    <CardListagem objeto={item} remove={remove} view="VisualizaEstoque" />
+                    <CardListagem objeto={item} remove={remove} pedidos={false} view="VisualizaEstoque" />
                 )}
                 keyExtractor={item => String(item.id)}
                 ListFooterComponent={renderFooter}

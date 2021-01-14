@@ -117,19 +117,27 @@ export default function CardListagem(item: any) {
               navigation.navigate(item.view, item.objeto);
             }}
           >
-            {hasPhoto ? (
-              <View>
-                <Image
-                  style={styles.image}
-                  source={{ uri: item.objeto.image }}
-                />
-              </View>
-            ) : (
-              <View>
-                <Image style={styles.image} source={require('../assets/semfoto.png')} />
-                <Text style={styles.codigoProduto}>{item.objeto.Codigo}</Text>
-              </View>
-            )}
+            
+            {
+              item.pedidos ? (
+                <></>
+              ) : (
+                hasPhoto ? (
+                  <View>
+                    <Image
+                      style={styles.image}
+                      source={{ uri: item.objeto.image }}
+                    />
+                  </View>
+                ) : (
+                  <View>
+                    <Image style={styles.image} source={require('../assets/semfoto.png')} />
+                    <Text style={styles.codigoProduto}>{item.objeto.Codigo}</Text>
+                  </View>
+                )
+              )
+            }
+            
             <View style={styles.cardContent}>
               <Text style={styles.name}>{item.objeto.nome}</Text>
               <Text style={styles.detalhes}>{item.objeto.detalhes}</Text>

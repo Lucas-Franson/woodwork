@@ -52,7 +52,7 @@ export default function Produtos() {
             <FlatList
                 data={data}
                 renderItem={({ item }) => (
-                    <CardListagem objeto={item} remove={remove} view="VisualizaProduto" />
+                    <CardListagem objeto={item} remove={remove} pedidos={false} view="VisualizaProduto" />
                 )}
                 keyExtractor={item => String(item.id)}
                 ListFooterComponent={renderFooter}

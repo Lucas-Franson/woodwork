@@ -54,8 +54,7 @@ const styles = StyleSheet.create({
     },
 
     formulario: {
-        margin: 10,
-        flex: 1
+        margin: 10
     },
 
     textInput: {
@@ -74,6 +73,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         height: 40,
         width: 200,
+        backgroundColor: '#75B09C',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     blockSalvar: {
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1
+        marginBottom: 10
     },
 
     centeredView: {
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto_500Medium',
         fontSize: 18
     },
-
 });
 
 export default styles;

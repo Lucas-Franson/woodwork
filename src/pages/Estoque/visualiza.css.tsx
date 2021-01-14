@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     blockSalvar: {
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: 10
     },
 
     centeredView: {

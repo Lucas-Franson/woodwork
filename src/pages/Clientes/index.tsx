@@ -52,7 +52,7 @@ export default function Clientes() {
             <FlatList
                 data={data}
                 renderItem={({ item }) => (
-                    <CardListagem objeto={item} remove={remove} view="VisualizaCliente" />
+                    <CardListagem objeto={item} remove={remove} pedidos={false} view="VisualizaCliente" />
                 )}
                 keyExtractor={item => String(item.id)}
                 ListFooterComponent={renderFooter}

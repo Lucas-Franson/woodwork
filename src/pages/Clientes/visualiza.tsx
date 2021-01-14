@@ -64,7 +64,7 @@ export default function VisualizaCliente() {
         } else {
           setData({...data, id: 1 });
         }
-    });
+      });
     }
   }, []);
 
